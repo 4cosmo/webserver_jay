@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"-->
+    <!--script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script-->
+    <!--script src='excelexportjs.js'></script-->
+    <script>
+        function exportTableToExcel(tableID, filename = '') {
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableID);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+            // Specify file name
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+            // Create download link element
+            downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <header>
+            <div class="collapse bg-dark" id="navbarHeader">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">About</h4>
+                    <p class="text-muted"> จัดทำขึ้นเพื่อการศึกษาในรายวิชาของคณะวิศวกรรมศาสตร์ </p>
+                    <p class="text-muted"> สาขาวิศวกรรมระบบเครื่องมือวัด </p>
+                  </div>
+                  <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Contact</h4>
+                    <ul class="list-unstyled">
+                      <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                      <li><a href="https://www.facebook.com/ByFocu5" class="text-white">Like on Facebook</a></li>
+                      <li><a href="#" class="text-white">Email me</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="navbar navbar-dark bg-dark shadow-sm">
+              <div class="container d-flex justify-content-between">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  <strong>Cusmo</strong>
+                </a>
+                <h3 align='center'>
+                  <div class="p-1 mb-1 bg-dark text-white">สถานะของโรงที่ {{no_page}}</div>
+              </h3>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              </div>
+            </div>
+          </header>
+    </div>
+
+    <div class="container">
+        <h4 align="ceneter">ตารางบันทึกค่าอุณหภูมิและความชื้น</h4>
+
+        <!--{% with messages = get_flashed_messages()%}
+      {% if messages %}
+      {% for msg in messages %}
+      <div class="alert alert-danger" role="alert">
+        <button type="button" class="close">X</button>
+        <strong>{{msg}}</strong>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}-->
+
+        <form action="/showdata2" method="post">
+
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">ความชื้นต่ำสุด</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="humid_min">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">ความชื้นสูงสุด</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="humid_max">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">อุณหภูมิต่ำสุด</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="temp_min">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">อุณหภูมิสูงสุด</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="temp_max">
+            </div>
+            <div class="col-auto" align="right">
+                <button onclick="exportTableToExcel('tblData','humidity')" type="button" class="btn btn-success">Save to excel</button>
+                <a href="/" class="btn btn-success">Close</a>
+                <button type="submit" class="btn btn-success">Filter</button>
+            </div>
+
+        </form>
+
+        <table id='tblData' class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">DATE</th>
+                    <th scope="col">TIME</th>
+                    <th scope="col">อุณหภูมิ</th>
+                    <th scope="col">ความชื้น</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in datas %}
+                <tr>
+                    <td>{{row.1}}</td>
+                    <td>{{row.2}}</td>
+                    <td>{{row.3}}</td>
+                    <td>{{row.4}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+        <h6 align='right'>
+            <div class="p-3 mb-2 bg-secondary text-white">
+                Instrumentation System Engineering
+                <br> King Mongkut's University of Technology North Bangkok
+            </div>
+        </h6>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
