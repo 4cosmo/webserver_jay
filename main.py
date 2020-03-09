@@ -9,9 +9,12 @@ def Home():
     with conn :
         cur=conn.cursor()
         cur.execute("select * from node1 where ( `id` = (select max(`id`) from `node1`))")
-        rows = cur.fetchall()
-        print(rows[0][1])
-        return render_template('home.html', value1 = rows[0][3], value2 = rows[0][4], value3 = 50, value4 = 50, value5 = 50, value6 = 50)
+        rows1 = cur.fetchall()
+        cur.execute("select * from node2 where ( `id` = (select max(`id`) from `node2`))")
+        rows2 = cur.fetchall()
+        cur.execute("select * from node3 where ( `id` = (select max(`id`) from `node3`))")
+        rows3 = cur.fetchall()
+        return render_template('home.html', value1 = rows1[0][3], value2 = rows1[0][4], value3 = rows2[0][3], value4 = rows2[0][4], value5 = rows3[0][3], value6 = rows3[0][4])
 
 @app.route('/showdata1')
 def data1():
