@@ -14,7 +14,7 @@ def Home():
         rows2 = cur.fetchall()
         cur.execute("select * from node3 where ( `id` = (select max(`id`) from `node3`))")
         rows3 = cur.fetchall()
-        return render_template('home.html', value1 = rows1[0][3], value2 = rows1[0][4], value3 = rows2[0][3], value4 = rows2[0][4], value5 = rows3[0][3], value6 = rows3[0][4])
+        return render_template('home.html', value2 = rows1[0][3], value1 = rows1[0][4], value4 = rows2[0][3], value3 = rows2[0][4], value6 = rows3[0][3], value5 = rows3[0][4])
 
 @app.route('/showdata1')
 def data1():
