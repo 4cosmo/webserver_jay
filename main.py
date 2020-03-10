@@ -18,15 +18,27 @@ def Home():
 
 @app.route('/showdata1')
 def data1():
-    return render_template('showdata1.html',no_page = 1)
+    with conn :
+        cur=conn.cursor()
+        cur.execute("select * from node1 order by id desc limit 200;")
+        rows = cur.fetchall()
+        return render_template('showdata1.html',no_page = 1, datas = rows)
 
 @app.route('/showdata2')
 def data2():
-    return render_template('showdata2.html',no_page = 2)
+    with conn :
+        cur=conn.cursor()
+        cur.execute("select * from node2 order by id desc limit 200;")
+        rows = cur.fetchall()
+        return render_template('showdata1.html',no_page = 1, datas = rows)
 
 @app.route('/showdata3')
 def data3():
-    return render_template('showdata3.html',no_page = 3)
+    with conn :
+        cur=conn.cursor()
+        cur.execute("select * from node3 order by id desc limit 200;")
+        rows = cur.fetchall()
+        return render_template('showdata1.html',no_page = 1, datas = rows)
 
 @app.route('/showdata1', methods=['POST'])
 def datas1():
